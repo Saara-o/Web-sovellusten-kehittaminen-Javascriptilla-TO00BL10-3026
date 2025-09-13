@@ -1,1 +1,1 @@
-This is the Master copy of Laurea University of Applied Sciences WEB development with JavaScript course workshops. Please feel free to download your own copy of it. Update and improvement suggestion are welcome.
+This is my personal copy of the master materials from Laurea University of Applied Sciences' Web Development with JavaScript course. I've been adding my own code to the workshops as the course has progressed
