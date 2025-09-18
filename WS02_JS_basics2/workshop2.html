@@ -43,6 +43,10 @@
 		<br><br><em>– Abraham Lincoln</em>
 	</blockquote>
 
+<!-- HARJOITUS 1 SCRIPT TÄGI ON TÄSSÄ-->
+	 <script> document.write("<strong><em>\"If I had nine hours to chop down a tree,I'd spend the first six sharpening my ax.\"</strong><em><br><br> – Abraham Lincoln</em>");</script>
+
+	 
 	<h2>Harjoitus 2</h2>
 
 	<p>Luo JavaScript-funktio nimeltä <code>repeatingText</code>, joka kirjoittaa saman rivin tekstiä sivulle 50 kertaa.
@@ -50,6 +54,18 @@
 
 	<p><strong>Bonus:</strong> kysy käyttäjältä toistojen määrä <a
 			href="https://developer.mozilla.org/en-US/docs/Web/APIrompt">prompt-ikkunalla</a>.</p>
+
+
+<!--HARJOITUS 2 SCRIPT TÄGI ON TÄSSÄ-->
+	<script>
+		function repeatingText(){
+    		let lkm = prompt("Monta kertaa toistetaan?")
+    		for (let i = 0; i < lkm; i++) {
+            	document.write("Moi maailma!")
+		}
+		} 
+	</script>
+
 
 	<h2>Harjoitus 3 - Selaimen tunnistaminen</h2>
 
@@ -68,6 +84,23 @@
 	<p><strong>Pohdiskelu:</strong> miksi selain-tunnistus voi olla epäluotettavaa ja miksi "Feature detection"
 		on usein parempi.</p>
 
+<!--HARJOITUS 3 SCRIPT TÄGI ON TÄSSÄ-->
+	<!--Käytetty <userAgent> <AppVersion> sijaan, koska <AppVersion> ei tunnista itse selainta vaan käyttöjarjestelmän esim. Windows,
+		minkä takia scripti ei toiminut odotetun mukaisesti ja tunnistanut käytettyä selainta.-->
+	<script>
+	
+		const selain = navigator.userAgent.toLowerCase();
+
+		if (selain.includes("firefox")) {
+			window.location.href = "http://www.mozilla.org";{
+			window.alert("You are using Firefox, redirecting to their website :)") }
+		} else {
+			window.location.href = "http://www.google.com";{
+			window.alert("You are not using Firefox, redirecting to Google :(")}
+		}
+	</script>	
+
+
 	<h2>Harjoitus 4</h2>
 
 	<p>Luo yksinkertainen verkkosivu, jossa JavaScriptin <code>confirm</code>-dialogi kysyy, onko käyttäjä
@@ -80,6 +113,17 @@
 
 	<p><strong>Bonus:</strong> kysy myös nimi prompt-ikkunalla ja tulosta: "Tervetuloa, Anna!"</p>
 
+<!--HARJOITUS 4 SCRIPT TÄGI ON TÄSSÄ-->
+	<script>
+		const opiskelija = confirm("Oletko opiskelija?");
+
+		if (opiskelija) {
+			document.write("Tervetuloa opiskelija");
+		} else {
+			document.write("Valitettavasti tämä sivu on tarkoitettu vain opiskelijoille");
+		}
+	</script>
+	
 	<h2>Harjoitus 5 - kuvien tulostaminen taulukosta</h2>
 
 	<p>Käytä <code>document.write</code>-komentoa tulostaaksesi kuvatagin määrittelemän kuvan selaimen sivulle.
