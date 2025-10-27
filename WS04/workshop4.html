@@ -115,22 +115,49 @@
 	</select>
 	<br />
 	<br />
-	<img alt="Auto" onmouseover="" onmouseout="" style="left: 0px; opacity: 1"
-		src="https://www.bmw.fi/content/dam/bmw/common/all-models/m-series/m8-coupe/2022/navigation/bmw-8series-coupe-modellfinder.png"
-		width="400" id="carimage" />
+	
+	<div id = "kuva"></div> 
 
 <!-- TEHTÄVÄ 2 -->
 	<script>
-		const valikko = document.querySelector("#mySelect")
+		const valikko = document.querySelector("#mySelect") // etsitty valikko
+		const kuva = document.querySelector("#kuva"); // etsitty kuva
 
-		valikko.addEventListener("change", valitseauto);
-
+		valikko.addEventListener("change", valitseauto); // lisätty kuuntelija valikkoon, kun arvo muutetaan
 
 		function valitseauto() {
 			let malli = valikko.value;
-				alert(malli);
-			//jatketaan koodia else/if lauseille, jos malli audi = img audi
+				alert(malli); // kun valikon arvo muuttuu, ilmoitus alert-viestinä
+			
+			// luodaan elementti kuvalle (html tiedostossa div-elementti, johon kuva sijoittuu), määritelty kuvan koko
+			let img = document.createElement("img");
+			img.width = 400;
+			img.alt = "Auto";
+
+			// sen mukaan kun arvo muuttuu, muuttuu kuva
+			if (malli === "BMW"){
+				img.src="https://www.bmw.fi/content/dam/bmw/common/all-models/m-series/m8-coupe/2022/navigation/bmw-8series-coupe-modellfinder.png"
+			} 
+			
+			else if (malli === "Audi") {
+				img.src="https://upload.wikimedia.org/wikipedia/commons/9/99/Audi_A8_2013_%2811209850785%29.jpg"
+			} 
+			
+			else if (malli === "Mercedes") {
+				img.src="https://upload.wikimedia.org/wikipedia/commons/4/44/2016_LA_Auto_Show_Mercedes_AMG_GT_C_Roadster.jpg"
+			} 
+			
+			else if (malli === "Volvo") {
+				img.src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Volvo_XC40_Recharge_Facelift_Leonberg_2022_1X7A0435.jpg/2560px-Volvo_XC40_Recharge_Facelift_Leonberg_2022_1X7A0435.jpg"
+			}
+			
+			// poistetaan vanha kuva div-elementistä
+			kuva.innerHTML = "";
+			
+			// lisätään kuva div-elementtiin
+			kuva.appendChild(img);
 		}
+
 	</script>
 
 
