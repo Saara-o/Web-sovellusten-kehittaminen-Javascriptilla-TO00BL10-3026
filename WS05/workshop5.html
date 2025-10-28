@@ -44,8 +44,9 @@
         reunalla ja anna käyttäjälle palautetta näyttämällä ilmoitus lomakkeella syötekentän vieressä olevassa &lt;span>
         -kentässä.</p>
 
-<!--TEHTÄVÄ 1-->
+<!--TEHTÄVÄ 1 JA TEHTÄVÄ 3-->
     <script>
+        
         function käsitteleLomake(e) {
             e.preventDefault(); // estetään lomakkeen lähettäminen
 
@@ -79,10 +80,20 @@
                 return;
             }
 
+            // Tallennentaan localStorageen
+            const tiedot = {
+                nimi: nimi,
+                sahkoposti: sposti,
+                kommentti: kommentti
+            };
+
+            localStorage.setItem("tiedot", JSON.stringify(tiedot));
+            
             // näytetään alert-ikkunassa syötetyt tiedot
             alert("Syötetyt tiedot: \nNimi: " + nimi + "\nSähköposti: " + sposti + "\nKommentti: " + kommentti)
            
         }
+
  
     </script>
 
