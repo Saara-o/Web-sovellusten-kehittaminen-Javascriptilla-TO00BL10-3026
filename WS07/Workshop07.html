@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<HTML lang="fi">
+
+<head>
+	<meta charset="utf-8">
+	<title>Työpaja 7</title>
+	<link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="ws8">
+	<h1>Työpaja 7: JSON/XML:n parsiminen AJAXilla</h1>
+	<hr />
+	<p>Tässä harjoituksessa harjoittelemme JSONin käyttöä JavaScript-sovelluksissa. Käytä luentomateriaalia rinnalla
+		viitteenä näiden tehtävien aikana.</p>
+
+	<hr />
+	<h2>Harjoitus 1: JSONin perusteet</h2>
+	<p>JSON tarkoittaa JavaScript Object Notationia, ja se tarkoittaa, että esittelemme datan muodossa, jonka JavaScript
+		ymmärtää sellaisenaan. Muunnoksia ei tarvita sen käyttämiseen.</p>
+	<p>
+		<button id="btnNimet">Näytä vain etu- ja sukunimi</button>
+		<button id="btnKaikki">Näytä kaikki tiedot</button>
+	</p>
+	<p>Kokeillaan seuraavaa. Voit luoda uuden JSON-datasetin JavaScript-koodissasi alla olevan mallin mukaisesti. Luo
+		sitten funktiot, jotka suoritetaan, kun painikkeita klikataan.</p>
+
+	<pre>
+			var text = '{ "employees" : [' +
+			'{ "firstName":"John" , "lastName":"Doe" },' +
+			'{ "firstName":"Anna" , "lastName":"Smith" },' +
+			'{ "firstName":"Peter" , "lastName":"Jones" } ]}';
+		</pre>
+	<ul>
+		<li>Ensimmäinen painike näyttää etu- ja sukunimen jokaisesta kohteesta alla olevassa divissä.</li>
+		<li>Toinen painike näyttää kaikki tiedot kaikista kohteista alla olevassa divissä. Halutessasi voit käyttää
+			for-silmukoita tässä.</li>
+	</ul>
+	<div id="jsondata">JSON-data näkyy täällä.</div>
+<!--TEHTÄVÄ 1-->
+
+	<script>
+		// JSON-datasetti
+		var text = '{ "employees" : [' +
+		'{ "firstName":"John" , "lastName":"Doe" , "email":"john.doe@doe.com"},' +
+		'{ "firstName":"Anna" , "lastName":"Smith" , "email":"anna.smith@smith.com" },' +
+		'{ "firstName":"Peter" , "lastName":"Jones" , "email":"peter.jones@jones.com" } ]}';
+
+		// Parsitaan JSON-teksti JavaScript-olioksi
+		let obj = JSON.parse(text);
+
+		// Ensimmäisen napin funktio
+		function vainNimet(){
+			let nimet = []; // luodaan taulukko
+
+			for (var i = 0; i < obj.employees.length; i++) {
+				let nimiObjekti = { 
+					firstName: obj.employees[i].firstName,
+					lastName: obj.employees[i].lastName
+				};
+				nimet.push(nimiObjekti);
+			}
+
+			let tuloste1 = JSON.stringify(nimet); // Muutetaan JSON-muotoon
+			document.getElementById("jsondata").textContent = tuloste1;
+		}
+
+		// Toisen napin funktio
+		function kaikki(){
+			let tuloste2 = JSON.stringify(obj.employees); // Muutetaan JSON-muotoon
+			document.getElementById("jsondata").textContent = tuloste2;
+		}
+
+		document.getElementById("btnNimet").addEventListener("click", vainNimet);
+		document.getElementById("btnKaikki").addEventListener("click", kaikki);
+		
+	</script>
+
+	<hr />
+	<h2>Harjoitus 2: JSONin parsiminen verkosta</h2>
+	<p>Alla näet kaksi painiketta. Muokkaa lähdekoodia ja lisää näihin painikkeisiin onClick-tapahtumat. Lisää
+		toiminnallisuudet alla kuvatulla tavalla.</p>
+	<p>
+		<button onclick="getRawData()">Lataa raaka data</button>
+		<button onclick="getTaulukko()">Lataa ja parsi data</button>
+	</p>
+
+	<ul>
+		<li>Ensimmäisen painikkeen tulee suorittaa JavaScript-funktio, joka lataa annetun <a
+				href="http://www.omdbapi.com/?s=star+wars&apikey=cbbc6750">JSON-tiedoston verkosta</a> ja näyttää sen
+			raakatiedot alla olevassa divissä (id=rawdata). Käytä kehittäjätyökaluja (F12) seurataksesi AJAX-kutsua ja
+			tutki otsikoita, suoritus­aikoja jne.</li>
+		<li>Toisen painikkeen tulee suorittaa funktio, joka lataa saman datan, mutta parsii sen ja näyttää tiedot
+			taulukossa.</li>
+		<li>Kun olet saanut datan näkyviin, kokeile ladata myös kuvat sivulle.</li>
+	</ul>
+	<div id="rawdata">Raaka data näkyy täällä.</div>
+
+<!--TEHTÄVÄ 2-->
+	<script>
+		//Ensimmäisen napin funktio
+		function getRawData() {
+		// Luodaan AJAX-olio
+			let xhr = new XMLHttpRequest();
+			xhr.open('GET', 'https://www.omdbapi.com/?s=star+wars&apikey=cbbc6750', true);
+			xhr.onreadystatechange = function () {
+  				if (xhr.readyState === 4 && xhr.status === 200) {
+    				let data = JSON.parse(xhr.responseText);
+					document.getElementById("rawdata").textContent = JSON.stringify(data);
+  				}
+		};
+		// Lähetetään AJAX-olio
+		xhr.send();
+	}
+
+		// Toisen napin funktio
+		function getTaulukko() {
+			let xhr = new XMLHttpRequest();
+			xhr.open('GET', 'https://www.omdbapi.com/?s=star+wars&apikey=cbbc6750', true);
+			xhr.onreadystatechange = function () {
+  			if (xhr.readyState === 4 && xhr.status === 200) {
+    			let data = JSON.parse(xhr.responseText);
+				naytaTaulukko(data);
+			}
+		};
+		xhr.send();
+	}
+
+		// Tehdään datasta taulukko, joka näytetään div-elementissä
+		function naytaTaulukko(data) { 
+  			let taulu = `
+					<table>
+  						<tr>
+    						<th>Title</th>
+    						<th>Year</th>
+    						<th>imdbID</th>
+    						<th>Type</th>
+    						<th>Poster</th>
+  						</tr>
+			`;
+
+			for (let i = 0; i < data.Search.length; i++) {
+				let elokuva = data.Search[i];
+				taulu += `<tr>
+              			<td>${elokuva.Title}</td>
+              			<td>${elokuva.Year}</td>
+						<td>${elokuva.imdbID}</td>
+						<td>${elokuva.Type}</td>
+						<td>${elokuva.Poster}</td>
+          			</tr>
+				`;
+      		}
+
+			taulu += "</table>";
+			document.getElementById("rawdata").textContent = taulu;
+		}
+
+	</script>
+
+	<hr />
+	<h2>Harjoitus 3: Käytännön haaste: OpenWeatherMap API</h2>
+
+	<p>OpenWeatherMap on tunnettu säädatan tarjoaja verkossa. Se tarjoaa API:n, jonka avulla kehittäjät voivat hakea
+		säätietoja. <a href="https://openweathermap.org/api">Dokumentaatio löytyy täältä</a>.</p>
+	<p>Tehtäväsi on kirjoittaa Sää-sovellus, joka näyttää säätiedot käyttäjän toiveiden mukaan. <b>Huomaa, että sinun
+			täytyy rekisteröityä (ilmaista) saadaksesi API-avaimen, joka mahdollistaa palvelun käytön.</b></p>
+
+	<p>Esimerkkikutsu REST API:iin voisi näyttää tältä: <a
+			href="http://api.openweathermap.org/data/2.5/weather?q=Helsinki&units=metric&mode=JSON&APPID=ff64c247a136f706923d1ee0d55d71e2">http://api.openweathermap.org/data/2.5/weather?q=Helsinki&units=metric&mode=JSON&APPID=ff64c247a136f706923d1ee0d55d71e2</a>.
+		Klikkaa nähdäksesi vastauksen.</p>
+	<ul>
+		<li>Kehitä ensin sovellus, joka näyttää raakatiedot säästä (lämpötila, pilvisyys, ilmankosteus) tietyssä
+			kaupungissa, kun painiketta klikataan. <button>Hae data</button></li>
+		<li>Kun tämä toimii, parsi data ja tulosta se diviin.</li>
+		<li>Tämän jälkeen lisää onchange-tapahtuma pudotusvalikkoon, jotta käyttäjä voi valita, minkä kaupungin tiedot
+			näytetään listalta.</li>
+		<li>Lopuksi lisää toiminnallisuus syötekenttään, johon käyttäjä voi kirjoittaa hakukyselyn, joka lähetetään
+			OpenWeatherMap API:lle ja jonka tulokset näytetään sovelluksessa.</li>
+	</ul>
+	<p>Valitse kaupunki listalta:</p>
+	<select name="mySelect" id="city" onchange="">
+		<option value="Helsinki">Helsinki</option>
+		<option value="Stockholm">Tukholma</option>
+		<option value="Rome">Rooma</option>
+		<option value="New York">New York</option>
+	</select>
+	<p>Tai kirjoita hakusana: <input id="citysearch" /><button id="search">Hae</button></p>
+	<div id="weatherdata">Säätiedot näkyvät täällä.</div>
+
+</body>
+
+</html>
